@@ -75,3 +75,41 @@ InputHandler.prototype.isPressed = function(code) {
   return false;
 
 };
+
+//draw Score Board
+Screen.prototype.drawScoreBoardTitle = function() {
+    var img = new Image();   // Create new img element
+    img.src = 'res/highScoresPic.png';
+    this.ctx.drawImage(img, 140, 110, 200, 30);
+};
+
+//draw Score Text
+Screen.prototype.drawText = function(text, x, y) {
+  this.ctx.fillStyle = "#FFE742";
+  this.ctx.font = "20px Impact";
+  //console.log(text);
+  this.ctx.fillText(text, x, y);
+};
+
+//draw Game Over
+Screen.prototype.drawGameOver = function() {
+    var img = new Image();   // Create new img element
+    img.src = 'res/gameOverPic.png';
+    this.ctx.drawImage(img, 140, 300, 200, 30);
+};
+
+//draw back button
+Screen.prototype.drawBackButton = function() {
+    var img = new Image();   // Create new img element
+    img.src = 'res/backPic.png';
+    img.id = 'backButton';
+    this.ctx.drawImage(img, 175, 500, 142, 56);
+
+    var x = document.createElement("AREA");
+    x.setAttribute("href", "#");
+    x.setAttribute("shape", "circle");
+    x.setAttribute("coords", "175,500,20");
+
+    document.getElementById("backButton").appendChild(x);
+};
+
