@@ -96,26 +96,34 @@
       //Generate the rainbowRoad
       if (frames % 60 === 0) {
         yCounter = 0;
-        halfGap = Math.random() * ( - min) + min;
+        halfGap = Math.random() * (70 - 50) + 50;
         //left part
         rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
         //right part
-        rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, 4, 5, "#800080"));
+        rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
       }
         if (frames % 5 === 0 && frames % 60 !== 0) {
           yCounter += 53.3;
+          halfGap = Math.random() * (70 - 50) + 50;
           //left part
-          rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - 70, 30, "#800080"));
+          rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
           //right part
-          // rainbowRoad.push(new Rainbow(player.x +, player.y - 34, -8, 4, 5, "#800080"));
+          rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
         }
 
 
-        // GAME OVER if Player get hit!
-        // if (AABBIntersect(p.x, p.y, p.width, p.height, player.x, player.y, player.w, player.h) && p.color === "#f00") {
-        //   player.health -= 10;
-        //   console.log('Game OVER!');
-        //   }
+        //GAME OVER if Player get hit!
+        for (var i = 0, len = rainbowRoad.length; i < len; i++) {
+          var r = rainbowRoad[i];
+        if (AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) {
+          player.health -= 1;
+          console.log('Game OVER!');
+            break;
+          }
+            }
+        if (player.health <= 0) {
+          //activate the endgame function
+        }
 
 
       // HOW TO CHANGE THE WIDTH OF THE RAINBOW ROAD AND CYCLE IT
