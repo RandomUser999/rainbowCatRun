@@ -97,17 +97,35 @@
       if (frames % 60 === 0) {
         yCounter = 0;
         halfGap = Math.random() * (70 - 50) + 50;
-        //left part
-        rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
-        //right part
-        rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+
+        //for first cycle
+        if (frames === 60) {
+          //left part
+          rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+          //right part
+          rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+        }
+        else {
+          //updating and repacling old array values
+          for (var i = 0, len = rainbowRoad.length; i <= len; i++) {
+          if(rainbowRoad[i].y === yCounter) {
+            //replace at left
+            rainbowRoad[i] = new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080");
+            //replace at right
+            rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080");
+            break;
+            }
+          }
+        }
       }
         if (frames % 5 === 0 && frames % 60 !== 0) {
           yCounter += 53.3;
           halfGap = Math.random() * (70 - 50) + 50;
           //left part
+          //Where yCounter is in array, array replace at that index
           rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
           //right part
+          //Where yCounter is in array, array replace at that index
           rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
         }
 
@@ -118,7 +136,7 @@
         if (AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) {
           player.health -= 1;
           console.log('Game OVER!');
-            break;
+            // break;
           }
             }
         if (player.health <= 0) {
@@ -166,5 +184,6 @@
 
 
   </script>
+  <!-- <embed loop="true" src="res/awesome_8bit.mp3" hidden="true" type="audio/mp3"></embed> -->
 </body>
 </html>
