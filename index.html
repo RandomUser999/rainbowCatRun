@@ -36,7 +36,7 @@
   <script>
     var screen, input, frames, spFrame;
     var catSprite, myScore;
-    var rainbowRoad;
+    var rainbowRoad, outsideRoad;
     var yCounter, halfGap;
 
     function mainGame() {
@@ -66,6 +66,7 @@
       }
 
       rainbowRoad = [];
+      outsideRoad = [];
     };
 
     function run() {
@@ -94,25 +95,25 @@
       }
 
       //Generate the rainbowRoad
-      if (frames % 60 === 0) {
+      if (frames % 60 === 0 || frames === 0) {
         yCounter = 0;
         halfGap = Math.random() * (70 - 50) + 50;
 
         //for first cycle
-        if (frames === 60) {
-          //left part
-          rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
-          //right part
-          rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+        if (frames === 0) {
+          //center part
+          rainbowRoad.push(new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080"));
+          // //right part
+          // rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
         }
         else {
           //updating and repacling old array values
           for (var i = 0, len = rainbowRoad.length; i <= len; i++) {
           if(rainbowRoad[i].y === yCounter) {
-            //replace at left
-            rainbowRoad[i] = new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080");
+            //replace at center
+            rainbowRoad[i] = new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080");
             //replace at right
-            rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080");
+            // rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080");
             break;
             }
           }
@@ -121,22 +122,38 @@
         if (frames % 5 === 0 && frames % 60 !== 0) {
           yCounter += 53.3;
           halfGap = Math.random() * (70 - 50) + 50;
-          //left part
-          //Where yCounter is in array, array replace at that index
-          rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
-          //right part
-          //Where yCounter is in array, array replace at that index
-          rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+
+          if (frames <= 60) {
+            //center part
+            rainbowRoad.push(new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080"));
+            // //right part
+            // rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+          }
+          else {
+          //updating and repacling old array values
+          for (var i = 0, len = rainbowRoad.length; i <= len; i++) {
+          if(rainbowRoad[i].y === yCounter) {
+            //replace at center
+            rainbowRoad[i] = new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080");
+            //replace at right
+            // rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080");
+            break;
+            }
+          }
+         }
         }
 
 
         //GAME OVER if Player get hit!
         for (var i = 0, len = rainbowRoad.length; i < len; i++) {
           var r = rainbowRoad[i];
-        if (AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) {
+        if ((AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) && frames >= 100 && frames % 60 === 0) {
           player.health -= 1;
-          console.log('Game OVER!');
+          console.log('You are dead!:' + player.health);
             // break;
+          }
+          else {
+            console.log('You are safe!:' + player.health);
           }
             }
         if (player.health <= 0) {
