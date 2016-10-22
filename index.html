@@ -1,58 +1,141 @@
 <!doctype html>
 <html lang='en'>
+
 <head>
-  <meta charset="utf-8">
-  <!-- <meta name="viewport" content="width=640px, user-scalable=no"> -->
-  <title>Cat Tunnel</title>
-  <script src="js/helper.js"></script>
-  <style>
-  /*input, textarea {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
-}*/
-  button {
-    background-color: grey;
-    border-radius: 8px;
-  }
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=640px, user-scalable=no"> -->
+    <title>Cat Tunnel</title>
+    <script src="js/helper.js"></script>
+    <style>
+    /*input, textarea {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    }*/
 
-  #container {
-    background-color: black;
-  }
+    button {
+        background-color: grey;
+        border-radius: 8px;
+    }
 
-  canvas {
-    background-image: url(res/stars.gif);
-    display: block;
-    position: absolute;
-    margin: auto;
-    margin-top: 30px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-  </style>
+    #container {
+        background-color: black;
+    }
+
+    canvas {
+        background-image: url(res/stars.gif);
+        display: block;
+        position: absolute;
+        margin: auto;
+        margin-top: 30px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .start-background {
+        background-image: url(res/stars.gif);
+        display: block;
+        position: relative;
+        width: 480px;
+        height: 640px;
+        margin: auto;
+        margin-top: 30px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 0;
+    }
+
+    .start-title {
+        color: #FFE742;
+        font-size: 48px;
+        text-align: center;
+        line-height: 390px;
+        font-family: Impact;
+    }
+
+    .start-image,
+    .highScore {
+        display: block;
+        margin: 0 auto;
+        width: 200px;
+    }
+
+    .score {
+        color: #FFE742;
+                text-align: center;
+padding-top: 8px;
+        font-size: 24px;
+        font-family: Impact;
+    }
+    </style>
 </head>
+
 <body>
-  <script>
+    <div class="start-background">
+        <div class="start-title">Rainbow Cat Run</div>
+        <img id="start-id" class="start-image" src="res/startGamePic.png" onmouseover="bigStart()" onmouseout="normalStart()" onclick="mainGame()">
+        <img id="score-id" style="padding-top: 23px;" class="highScore" src="res/highScoresPic.png" onmouseover="bigScore()" onmouseout="normalScore()" onclick="highScore()">
+        <div class="score">1. 340000 pts</div>
+        <div class="score">2. 210000 pts</div>
+        <div class="score">3. 120000 pts</div>
+    </div>
+    <script>
+    function bigStart() {
+        document.getElementById("start-id").src = "res/startGamePic2.png";
+        document.getElementById("start-id").style.width = "300px";
+    }
+
+    function normalStart() {
+        document.getElementById("start-id").src = "res/startGamePic.png";
+        document.getElementById("start-id").style.width = "200px";
+    }
+
+    function bigScore() {
+        document.getElementById("score-id").src = "res/highScoresPic2.png";
+        document.getElementById("score-id").style.width = "300px";
+    }
+
+    function normalScore() {
+        document.getElementById("score-id").src = "res/highScoresPic.png";
+        document.getElementById("score-id").style.width = "200px";
+    }
+
+    function highScore() {
+        screen = new Screen(480, 640);
+        screen.drawScoreBoardTitle();
+        screen.drawText("1. 340000 pts", 190, 200);
+        screen.drawText("2. 210000 pts", 190, 260);
+        screen.drawText("3. 170000 pts", 190, 320);
+        screen.drawBackButton();
+    }
+
+
+    </script>
+
+    <script>
     var screen, input, frames, spFrame;
     var catSprite, myScore;
     var rainbowRoad, outsideRoad;
     var yCounter, halfGap;
 
     function mainGame() {
-      screen = new Screen(480, 640);
-      input = new InputHandler();
-
-      var img = new Image();
-      img.addEventListener("load", function() {
-        catSprite = new Sprite(this, 0, 0, 77, 49);
-        init();
-        run();
-      });
-      img.src = "res/hackGSU_RainbowCatRun.png";
+        console.log("hi");
+        screen = new Screen(480, 640);
+        input = new InputHandler();
+        var img = new Image();
+        img.addEventListener("load", function() {
+            catSprite = new Sprite(this, 0, 0, 77, 49);
+            init();
+            run();
+        });
+        img.src = "res/hackGSU_RainbowCatRun.png";
     };
 
     function init() {
+<<<<<<< HEAD
       frames = 0;
       spFrame = 0;
 
@@ -67,19 +150,32 @@
 
       rainbowRoad = [];
       outsideRoad = [];
+=======
+        frames = 0;
+        spFrame = 0;
+        player = {
+            sprite: catSprite,
+            x: (screen.width - catSprite.w) / 2,
+            y: screen.height - (30 + catSprite.h),
+            w: catSprite.w,
+            h: catSprite.h,
+            health: 1
+        }
+        rainbowRoad = [];
     };
 
     function run() {
-      console.log("Game Running!");
-      var loop = function() {
-        update();
-        render();
+        console.log("Game Running!");
+        var loop = function() {
+            update();
+            render();
+            window.requestAnimationFrame(loop, screen.canvas);
+        };
         window.requestAnimationFrame(loop, screen.canvas);
-      };
-      window.requestAnimationFrame(loop, screen.canvas);
     };
 
     function update() {
+<<<<<<< HEAD
 
       if (input.isDown(37)) { //LEFT
         player.x -= 8;
@@ -117,8 +213,28 @@
             break;
             }
           }
+=======
+        if (input.isDown(37)) { //LEFT
+            player.x -= 8;
         }
-      }
+        if (input.isDown(39)) { //RIGHT
+            player.x += 8;
+        }
+        if (input.isDown(40)) { //UP
+            player.y += 8;
+        }
+        if (input.isDown(38)) { //DOWN
+            player.y -= 8;
+        }
+        //Generate the rainbowRoad
+        if (frames % 60 === 0) {
+            yCounter = 0;
+            halfGap = Math.random() * (70 - 50) + 50;
+            //left part
+            rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+            //right part
+            rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+        }
         if (frames % 5 === 0 && frames % 60 !== 0) {
           yCounter += 53.3;
           halfGap = Math.random() * (70 - 50) + 50;
@@ -141,9 +257,13 @@
             }
           }
          }
+            yCounter += 53.3;
+            halfGap = Math.random() * (70 - 50) + 50;
+            //left part
+            rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+            //right part
+            rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
         }
-
-
         //GAME OVER if Player get hit!
         for (var i = 0, len = rainbowRoad.length; i < len; i++) {
           var r = rainbowRoad[i];
@@ -155,52 +275,59 @@
           else {
             console.log('You are safe!:' + player.health);
           }
+            var r = rainbowRoad[i];
+            if (AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) {
+                player.health -= 1;
+                console.log('Game OVER!');
+                break;
+                console.log('Game 11111!');
             }
-        if (player.health <= 0) {
-          //activate the endgame function
         }
-
-
-      // HOW TO CHANGE THE WIDTH OF THE RAINBOW ROAD AND CYCLE IT
-      // if (frames % lvFrame === 0){
-      //   spFrame = (spFrame + 1) % 2;
-      //
-      //   var max_ = 0, min_ = screen.width;
-      //   for (var i = 0, len = aliens.length; i < len; i++) {
-      //     var a = aliens[i];
-      //     a.x += 30 * dir;
-      //
-      //     max_ = Math.max(max_, a.x + a.w);
-      //     min_ = Math.min(min_, a.x);
-      //   }
-      //
-      //   if (max_ > screen.width -30 || min_ < 30) {
-      //     dir *= -1;
-      //     for (var i = 0, len = aliens.length; i < len; i++) {
-      //       aliens[i].x += 30 * dir;
-      //       aliens[i].y += 30;
-      //     }
-      //   }
-      // }
-      frames++;
-      console.log(frames);
+        if (player.health <= 0) {
+            //activate the endgame function
+        }
+        // HOW TO CHANGE THE WIDTH OF THE RAINBOW ROAD AND CYCLE IT
+        // if (frames % lvFrame === 0){
+        //   spFrame = (spFrame + 1) % 2;
+        //
+        //   var max_ = 0, min_ = screen.width;
+        //   for (var i = 0, len = aliens.length; i < len; i++) {
+        //     var a = aliens[i];
+        //     a.x += 30 * dir;
+        //
+        //     max_ = Math.max(max_, a.x + a.w);
+        //     min_ = Math.min(min_, a.x);
+        //   }
+        //
+        //   if (max_ > screen.width -30 || min_ < 30) {
+        //     dir *= -1;
+        //     for (var i = 0, len = aliens.length; i < len; i++) {
+        //       aliens[i].x += 30 * dir;
+        //       aliens[i].y += 30;
+        //     }
+        //   }
+        // }
+        frames++;
+        console.log(frames);
     };
 
     function render() {
-      screen.clear();
-      screen.ctx.save();
-      for (var i = 0, len = rainbowRoad.length; i < len; i++) {
-        screen.drawRainbow(rainbowRoad[i]);
-      }
-      screen.ctx.restore();
-
-      screen.drawSprite(player.sprite, player.x, player.y);
+        screen.clear();
+        screen.ctx.save();
+        for (var i = 0, len = rainbowRoad.length; i < len; i++) {
+            screen.drawRainbow(rainbowRoad[i]);
+        }
+        screen.ctx.restore();
+        screen.drawSprite(player.sprite, player.x, player.y);
     };
-
-    mainGame();
-
-
-  </script>
-  <!-- <embed loop="true" src="res/awesome_8bit.mp3" hidden="true" type="audio/mp3"></embed> -->
+    //mainGame();
+    //startGame();
+    //
+    function endGame() {
+        screen = new Screen(480, 640);
+        screen.drawGameOver();
+    }
+    </script>
 </body>
+
 </html>
