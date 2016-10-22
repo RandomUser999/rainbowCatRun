@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=504px, user-scalable=no">
+  <title>Cat Tunnel</title>
+  <script src="js/helper.js"></script>
+  <style>
+  /*input, textarea {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}*/
+  button {
+    background-color: grey;
+    border-radius: 8px;
+  }
+
+  #container {
+    background-color: black;
+  }
+
+  canvas {
+    background-image: url(res/stars.gif);
+    display: block;
+    position: absolute;
+    margin: auto;
+    margin-top: 30px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  </style>
+</head>
+<body>
+  <script>
+    var screen, input, frames, spFrame, dir;
+    var catSprite, myScore;
+    var rainbowRoad;
+
+    function mainGame() {
+      screen = new Screen(480, 640);
+      input = new InputHandler();
+
+      var img = new Image();
+      img.addEventListener("load", function() {
+        sponserSprite = [
+          [new Sprite(this, 0, 0, 42, 36), new Sprite(this, 0, 0, 42, 36)]
+        ];
+        catSprite = new Sprite(this, 62, 5, 50, 50);
+        init();
+        run();
+      });
+      img.src = "res/hackGSU_RainbowCatRun.png";
+    };
+
+    function init() {
+      frames = 0;
+      spFrame = 0;
+      dir = 1;
+
+      player = {
+        sprite: catSprite,
+        x: (screen.width - catSprite.w) / 2,
+        y: screen.height - (30 + catSprite.h),
+        w: catSprite.w,
+        h: catSprite.h,
+        health: 1
+      }
+
+      rainbowRoad = [];
+    };
+
+    function run() {
+      console.log("Game Running!");
+      var loop = function() {
+        update();
+        render();
+        window.requestAnimationFrame(loop, screen.canvas);
+      };
+      window.requestAnimationFrame(loop, screen.canvas);
+    };
+
+    function update() {
+
+      if (input.isDown(37)) { //LEFT
+        player.x -= 8;
+      }
+      if (input.isDown(39)) { //RIGHT
+        player.x += 8;
+      }
+      if (input.isDown(40)) { //UP
+        player.y += 8;
+      }
+      if (input.isDown(38)) { //DOWN
+        player.y -= 8;
+      }
+
+
+        // GAME OVER if Player get hit!
+        // if (AABBIntersect(p.x, p.y, p.width, p.height, player.x, player.y, player.w, player.h) && p.color === "#f00") {
+        //   player.health -= 10;
+        //   console.log('Game OVER!');
+        //   }
+
+
+      // HOW TO CHANGE THE WIDTH OF THE RAINBOW ROAD AND CYCLE IT
+      // if (frames % lvFrame === 0){
+      //   spFrame = (spFrame + 1) % 2;
+      //
+      //   var max_ = 0, min_ = screen.width;
+      //   for (var i = 0, len = aliens.length; i < len; i++) {
+      //     var a = aliens[i];
+      //     a.x += 30 * dir;
+      //
+      //     max_ = Math.max(max_, a.x + a.w);
+      //     min_ = Math.min(min_, a.x);
+      //   }
+      //
+      //   if (max_ > screen.width -30 || min_ < 30) {
+      //     dir *= -1;
+      //     for (var i = 0, len = aliens.length; i < len; i++) {
+      //       aliens[i].x += 30 * dir;
+      //       aliens[i].y += 30;
+      //     }
+      //   }
+      // }
+      frames++;
+    };
+
+    function render() {
+      screen.clear();
+
+      // for (var i = 0, len = aliens.length; i < len; i++) {
+      //   var a = aliens[i];
+      //   screen.drawSprite(a.sprite[spFrame], a.x, a.y);
+      // }
+
+      screen.ctx.save();
+      // for (var i = 0, len = projectiles.length; i < len; i++) {
+      //   screen.drawProjectile(projectiles[i]);
+      // }
+      screen.ctx.restore();
+
+      screen.drawSprite(player.sprite, player.x, player.y);
+    };
+
+    mainGame();
+
+
+  </script>
+</body>
+</html>
