@@ -18,10 +18,25 @@ function Screen(width, height) {
 
 Screen.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.width, this.height);
-}
+};
 
 Screen.prototype.drawSprite = function(sp, x, y) {
   this.ctx.drawImage(sp.img, sp.x, sp.y, sp.w, sp.h, x, y, sp.w, sp.h);
+};
+
+//Rainbow
+function Rainbow(x, y, w, h, color) {
+  this.x = x;
+  this.y = y;
+  this.width = w;
+  this.height = h;
+  this.color = color;
+};
+
+//draw rainbowRoad
+Screen.prototype.drawRainbow = function(rainbowRoad) {
+  this.ctx.fillStyle = rainbowRoad.color;
+  this.ctx.fillRect(rainbowRoad.x, rainbowRoad.y, rainbowRoad.width, rainbowRoad.height);
 };
 
 // Sprite

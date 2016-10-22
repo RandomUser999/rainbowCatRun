@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=504px, user-scalable=no">
+  <!-- <meta name="viewport" content="width=640px, user-scalable=no"> -->
   <title>Cat Tunnel</title>
   <script src="js/helper.js"></script>
   <style>
@@ -34,9 +34,10 @@
 </head>
 <body>
   <script>
-    var screen, input, frames, spFrame, dir;
+    var screen, input, frames, spFrame;
     var catSprite, myScore;
     var rainbowRoad;
+    var yCounter, halfGap;
 
     function mainGame() {
       screen = new Screen(480, 640);
@@ -44,10 +45,7 @@
 
       var img = new Image();
       img.addEventListener("load", function() {
-        sponserSprite = [
-          [new Sprite(this, 0, 0, 42, 36), new Sprite(this, 0, 0, 42, 36)]
-        ];
-        catSprite = new Sprite(this, 62, 5, 50, 50);
+        catSprite = new Sprite(this, 0, 0, 77, 49);
         init();
         run();
       });
@@ -57,7 +55,6 @@
     function init() {
       frames = 0;
       spFrame = 0;
-      dir = 1;
 
       player = {
         sprite: catSprite,
@@ -96,6 +93,23 @@
         player.y -= 8;
       }
 
+      //Generate the rainbowRoad
+      if (frames % 60 === 0) {
+        yCounter = 0;
+        halfGap = Math.random() * ( - min) + min;
+        //left part
+        rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+        //right part
+        rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, 4, 5, "#800080"));
+      }
+        if (frames % 5 === 0 && frames % 60 !== 0) {
+          yCounter += 53.3;
+          //left part
+          rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - 70, 30, "#800080"));
+          //right part
+          // rainbowRoad.push(new Rainbow(player.x +, player.y - 34, -8, 4, 5, "#800080"));
+        }
+
 
         // GAME OVER if Player get hit!
         // if (AABBIntersect(p.x, p.y, p.width, p.height, player.x, player.y, player.w, player.h) && p.color === "#f00") {
@@ -126,20 +140,15 @@
       //   }
       // }
       frames++;
+      console.log(frames);
     };
 
     function render() {
       screen.clear();
-
-      // for (var i = 0, len = aliens.length; i < len; i++) {
-      //   var a = aliens[i];
-      //   screen.drawSprite(a.sprite[spFrame], a.x, a.y);
-      // }
-
       screen.ctx.save();
-      // for (var i = 0, len = projectiles.length; i < len; i++) {
-      //   screen.drawProjectile(projectiles[i]);
-      // }
+      for (var i = 0, len = rainbowRoad.length; i < len; i++) {
+        screen.drawRainbow(rainbowRoad[i]);
+      }
       screen.ctx.restore();
 
       screen.drawSprite(player.sprite, player.x, player.y);
