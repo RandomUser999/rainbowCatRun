@@ -48,7 +48,7 @@
         z-index: 0;
     }
 
-    .start-title {
+    #start-title {
         color: #FFE742;
         font-size: 48px;
         text-align: center;
@@ -75,7 +75,7 @@ padding-top: 8px;
 
 <body>
     <div class="start-background">
-        <div class="start-title">Rainbow Cat Run</div>
+        <div id="start-title">Rainbow Cat Run</div>
         <img id="start-id" class="start-image" src="res/startGamePic.png" onmouseover="bigStart()" onmouseout="normalStart()" onclick="mainGame()">
         <img id="score-id" style="padding-top: 23px;" class="highScore" src="res/highScoresPic.png" onmouseover="bigScore()" onmouseout="normalScore()" onclick="highScore()">
         <div class="score">1. 340000 pts</div>
@@ -119,9 +119,10 @@ padding-top: 8px;
     var screen, input, frames, spFrame;
     var catSprite, myScore;
     var rainbowRoad, outsideRoad;
-    var yCounter, halfGap;
+    var yCounter, halfGap, randomMove;
 
     function mainGame() {
+        // getElementById(start-title);
         console.log("hi");
         screen = new Screen(480, 640);
         input = new InputHandler();
@@ -135,7 +136,6 @@ padding-top: 8px;
     };
 
     function init() {
-<<<<<<< HEAD
       frames = 0;
       spFrame = 0;
 
@@ -150,7 +150,6 @@ padding-top: 8px;
 
       rainbowRoad = [];
       outsideRoad = [];
-=======
         frames = 0;
         spFrame = 0;
         player = {
@@ -175,138 +174,86 @@ padding-top: 8px;
     };
 
     function update() {
-<<<<<<< HEAD
 
       if (input.isDown(37)) { //LEFT
-        player.x -= 8;
+        player.x -= 16;
       }
       if (input.isDown(39)) { //RIGHT
-        player.x += 8;
+        player.x += 16;
       }
       if (input.isDown(40)) { //UP
-        player.y += 8;
+        player.y += 16;
       }
       if (input.isDown(38)) { //DOWN
-        player.y -= 8;
+        player.y -= 16;
       }
 
-      //Generate the rainbowRoad
-      if (frames % 60 === 0 || frames === 0) {
-        yCounter = 0;
-        halfGap = Math.random() * (70 - 50) + 50;
-
-        //for first cycle
-        if (frames === 0) {
-          //center part
-          rainbowRoad.push(new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080"));
-          // //right part
-          // rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
-        }
-        else {
-          //updating and repacling old array values
-          for (var i = 0, len = rainbowRoad.length; i <= len; i++) {
-          if(rainbowRoad[i].y === yCounter) {
-            //replace at center
-            rainbowRoad[i] = new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080");
-            //replace at right
-            // rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080");
-            break;
-            }
-          }
-=======
-        if (input.isDown(37)) { //LEFT
-            player.x -= 8;
-        }
-        if (input.isDown(39)) { //RIGHT
-            player.x += 8;
-        }
-        if (input.isDown(40)) { //UP
-            player.y += 8;
-        }
-        if (input.isDown(38)) { //DOWN
-            player.y -= 8;
-        }
         //Generate the rainbowRoad
-        if (frames % 60 === 0) {
+        if (frames % 60 === 0 || frames === 0) {
             yCounter = 0;
-            halfGap = Math.random() * (70 - 50) + 50;
+            halfGap = Math.random() * (90 - 50) + 50;
+            randomMove = Math.random() * (90 - 50) + 50;
             //left part
-            rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
-            //right part
-            rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+
+            if (frames === 0) {
+              //left part
+              rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 80, "#800080"));
+              //right part
+              rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 80, "#800080"));
+            }
+            else {
+              //updating and repacling old array values
+              for (var i = 0, len = rainbowRoad.length; i <= len; i++) {
+              if(rainbowRoad[i].y === yCounter) {
+                //replace at left
+                rainbowRoad[i] = new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 80, "#800080");
+                //replace at right
+                rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 80, "#800080");
+                break;
+                }
+              }
+            }
         }
         if (frames % 5 === 0 && frames % 60 !== 0) {
           yCounter += 53.3;
           halfGap = Math.random() * (70 - 50) + 50;
 
           if (frames <= 60) {
-            //center part
-            rainbowRoad.push(new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080"));
+            //left part
+            rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 80, "#800080"));
             // //right part
-            // rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
+            rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 80, "#800080"));
           }
           else {
           //updating and repacling old array values
           for (var i = 0, len = rainbowRoad.length; i <= len; i++) {
           if(rainbowRoad[i].y === yCounter) {
-            //replace at center
-            rainbowRoad[i] = new Rainbow((screen.width / 2) - halfGap, yCounter, (screen.width / 2) - halfGap, 100, "#800080");
+            //replace at left
+            rainbowRoad[i] = new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 80, "#800080");
             //replace at right
-            // rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080");
+            rainbowRoad[i+1] = new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 80, "#800080");
             break;
             }
           }
          }
-            yCounter += 53.3;
-            halfGap = Math.random() * (70 - 50) + 50;
-            //left part
-            rainbowRoad.push(new Rainbow(0, yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
-            //right part
-            rainbowRoad.push(new Rainbow(halfGap + (screen.width / 2), yCounter, (screen.width / 2) - halfGap, 30, "#800080"));
         }
         //GAME OVER if Player get hit!
         for (var i = 0, len = rainbowRoad.length; i < len; i++) {
           var r = rainbowRoad[i];
-        if ((AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) && frames >= 100 && frames % 60 === 0) {
+        if (AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) {
           player.health -= 1;
           console.log('You are dead!:' + player.health);
             // break;
           }
-          else {
-            console.log('You are safe!:' + player.health);
-          }
-            var r = rainbowRoad[i];
-            if (AABBIntersect(r.x, r.y, r.width, r.height, player.x, player.y, player.w, player.h)) {
-                player.health -= 1;
-                console.log('Game OVER!');
-                break;
-                console.log('Game 11111!');
-            }
         }
         if (player.health <= 0) {
+          var oldcanv = document.getElementById('gameScreen');
+          screen.clear();
+          document.body.removeChild(oldcanv);
+          endGame();
             //activate the endgame function
         }
-        // HOW TO CHANGE THE WIDTH OF THE RAINBOW ROAD AND CYCLE IT
-        // if (frames % lvFrame === 0){
-        //   spFrame = (spFrame + 1) % 2;
-        //
-        //   var max_ = 0, min_ = screen.width;
-        //   for (var i = 0, len = aliens.length; i < len; i++) {
-        //     var a = aliens[i];
-        //     a.x += 30 * dir;
-        //
-        //     max_ = Math.max(max_, a.x + a.w);
-        //     min_ = Math.min(min_, a.x);
-        //   }
-        //
-        //   if (max_ > screen.width -30 || min_ < 30) {
-        //     dir *= -1;
-        //     for (var i = 0, len = aliens.length; i < len; i++) {
-        //       aliens[i].x += 30 * dir;
-        //       aliens[i].y += 30;
-        //     }
-        //   }
-        // }
+
         frames++;
         console.log(frames);
     };
@@ -320,13 +267,9 @@ padding-top: 8px;
         screen.ctx.restore();
         screen.drawSprite(player.sprite, player.x, player.y);
     };
-    //mainGame();
-    //startGame();
-    //
     function endGame() {
-        screen = new Screen(480, 640);
-        screen.drawGameOver();
-    }
+
+    };
     </script>
 </body>
 
